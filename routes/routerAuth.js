@@ -5,6 +5,8 @@ const path = require("path");
 const filePath = path.join(__dirname, "..", "manager.json");
 let users = require('../manager.json');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'secret-key1!'
 
 
 authRouter.post("/register", async (req, res, next) => {
@@ -26,6 +28,27 @@ authRouter.post("/register", async (req, res, next) => {
         });
       }
     );
+
+    authRouter.post("/login", async (req, res, next) => {
+      let { email, password } = await req.body;               
+      const currentUser = users.find((user) => user.email === email);
+      if(!currentUser) {
+        return next({ status: 401, message: "No user with such email" });
+      }
+      
+      const passwordMatch = await bcrypt.compare(password, currentUser.password)
+      if (!passwordMatch) {
+        return next({ status: 401, message: "invalid password" });
+      }
+      const token = jwt.sign({ userId: currentUser.id }, 'SECRET_KEY', {
+        expiresIn: '5m',
+        });
+
+      res.status(200).json({ token, email });
+     
+    }
+  );
+
   
 
 module.exports = authRouter
