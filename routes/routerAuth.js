@@ -13,14 +13,12 @@ authRouter.post("/register", async (req, res, next) => {
         let { email, password } = await req.body;               
         const newId = (Math.max(users.map((user) => user.id)) + 1) || 1;
         const hashedPassword = await bcrypt.hash(password, 10)
-
         const newUser = {
           id: newId,
           email,
           password: hashedPassword,
           super: null
-        };
-       
+        };       
         users.push(newUser);
         res.status(201).json(newUser);
         fs.writeFile(filePath, JSON.stringify(users), (err) => {
@@ -34,16 +32,14 @@ authRouter.post("/register", async (req, res, next) => {
       const currentUser = users.find((user) => user.email === email);
       if(!currentUser) {
         return next({ status: 401, message: "No user with such email" });
-      }
-      
+      }      
       const passwordMatch = await bcrypt.compare(password, currentUser.password)
       if (!passwordMatch) {
         return next({ status: 401, message: "invalid password" });
       }
-      const token = jwt.sign({ userId: currentUser.id }, 'SECRET_KEY', {
-        expiresIn: '5m',
+      const token = jwt.sign({ userId: currentUser.id }, SECRET_KEY, {
+        expiresIn: '1h',
         });
-
       res.status(200).json({ token, email });
      
     }
