@@ -2,19 +2,25 @@
   {
     "id": 1,
     "email": "test@email.com",
-    "password": "$2a$10$gF/FhxmYRIZx8j8gsbhYxO3UkTVuXHvEGKHSC5dCFW8dtkD7CV.DG",
-    "super": null
+    "password": "$2a$10$D2hlRe7h3G.gN/hntVCF5OEcznATGLBC/njkeeILD5nW7nkgPXcY.",
+    "super": false
   },
   {
     "id": 2,
     "email": "test2@email.com",
-    "password": "$2a$10$Qoti2tPwIp6.w3scKDPKSesj2kNeG694d8X1/ODGGOT00MsL.7gUu",
-    "super": null
+    "password": "$2a$10$jOAwgD/LNmqSizKmKA2EwOHYdHEPo3fOP1i5ugELgXEQVdRekuxGO",
+    "super": false
   },
   {
-    "id": 1,
+    "id": 3,
     "email": "test3@email.com",
-    "password": "$2a$10$wWLeuhQg7G8EV.jH9OPxlu.4iELFjvaphuPuQPeu0P8gJ5VsJDUaW",
-    "super": null
+    "password": "$2a$10$iXFWd0didPBvXpm7u191AOCzr4Ln.5IZtwMJg7kMy4ZQRD/mUfw4K",
+    "super": true
+  },
+  {
+    "id": 4,
+    "email": "test4@email.com",
+    "password": "$2a$10$qrXkJG11CLK8zAaz1mOQFeFvBp.6V3XLkKfLJGLPrUas9nZ.cf1R6",
+    "super": false
   }
 ]

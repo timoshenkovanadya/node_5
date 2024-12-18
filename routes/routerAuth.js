@@ -10,14 +10,14 @@ const SECRET_KEY = 'secret-key1!'
 
 
 authRouter.post("/register", async (req, res, next) => {
-        let { email, password } = await req.body;               
-        const newId = (Math.max(users.map((user) => user.id)) + 1) || 1;
+        let { email, password } = await req.body;                       
+        const newId = users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1;;
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = {
           id: newId,
           email,
           password: hashedPassword,
-          super: null
+          super: newId === 3? true : false,
         };       
         users.push(newUser);
         res.status(201).json(newUser);
@@ -38,7 +38,7 @@ authRouter.post("/register", async (req, res, next) => {
         return next({ status: 401, message: "invalid password" });
       }
       const token = jwt.sign({ userId: currentUser.id }, SECRET_KEY, {
-        expiresIn: '1h',
+        expiresIn: '12h',//TODO: change expiration time to 5m
         });
       res.status(200).json({ token, email });
      

@@ -38,10 +38,6 @@ app.use((err, req, res, next) => {
     .json({ message: err.message || "Internal Server Error" });
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.listen(3000, function () {
   console.log("Running");
 });

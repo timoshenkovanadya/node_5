@@ -9,11 +9,12 @@ const {
   checkString,
   checkYear,
 } = require("../helpers");
+let users = require('../manager.json');
 
 const filmsRouter = express.Router();
 
 filmsRouter.get("/readall", (req, res) => {
-  fs.readFile(filePath, "utf8", (err, data) => {
+  fs.readFile(filePath, "utf8", (err, data) => {   
     if (err) {
       throw new Error(err);
     }
@@ -41,10 +42,15 @@ filmsRouter.get("/read", (req, res, next) => {
 });
 
 filmsRouter.post("/create", (req, res, next) => {
+  
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
       return next(new Error("Error of file riding"));
     }
+    if(!checkIsSuper(req)) {
+    return next({ status: 403, message: "Forbidden" });
+  }
+  
     let { title, rating, year, budget, gross, poster, position } = req.body;
     if (
       !title ||
@@ -101,6 +107,9 @@ filmsRouter.post("/update", (req, res, next) => {
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
       return next(new Error("Error of file riding"));
+    }
+    if(!checkIsSuper(req)) {
+      return next({ status: 403, message: "Forbidden" });
     }
     let { id, title, rating, year, budget, gross, poster, position } = req.body;
     if (
@@ -163,6 +172,9 @@ filmsRouter.post("/delete", (req, res, next) => {
     if (err) {
       return next(new Error("Error of file riding"));
     }
+    if(!checkIsSuper(req)) {
+      return next({ status: 403, message: "Forbidden" });
+    }
     const { body } = req;
     if (!checkId(body.id)) {
       return next({ status: 400, message: "id should be number or string" });
@@ -187,5 +199,15 @@ filmsRouter.post("/delete", (req, res, next) => {
     }
   });
 });
+
+
+function checkIsSuper(req) {
+  const currentId = req.user.userId;
+  const currentUser = users.find((user)=> user.id === currentId);
+  if(currentUser.super) {
+    return true
+  }
+  return false;
+}
 
 module.exports = filmsRouter;
